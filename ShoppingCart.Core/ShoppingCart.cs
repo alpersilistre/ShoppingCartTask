@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using ShoppingCart.Core.Helpers;
 using ShoppingCart.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,7 @@ namespace ShoppingCart.Core
         public void AddItem(Product product, int quantity = 1)
         {            
             Guard.Against.Null(product, nameof(product));
+            Guard.Against.Negative(quantity, nameof(quantity));
 
             ShoppingCartItem item;
 
@@ -64,6 +66,7 @@ namespace ShoppingCart.Core
         public void RemoveItem(Product product, int quantity = 1)
         {
             Guard.Against.Null(product, nameof(product));
+            Guard.Against.Negative(quantity, nameof(quantity));
 
             if (Items.Any(x => x.Product.Title == product.Title))
             {

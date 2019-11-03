@@ -9,35 +9,42 @@ namespace ShoppingCart
     {
         static void Main()
         {
-            var tShirtCategory = new Category("TShirt");
-            var jacketCategory = new Category("Jacket");
+            try
+            {
+                var tShirtCategory = new Category("TShirt");
+                var jacketCategory = new Category("Jacket");
 
-            var campaigns = new List<Campaign>();
+                var campaigns = new List<Campaign>();
 
-            var tShirtCampaign = new Campaign(20, 3, DiscountType.Rate, tShirtCategory);
+                var tShirtCampaign = new Campaign(20, 3, DiscountType.Rate, tShirtCategory);
 
-            campaigns.Add(tShirtCampaign);
+                campaigns.Add(tShirtCampaign);
 
-            var coupon = new Coupon(50, 300, DiscountType.Amount);
+                var coupon = new Coupon(50, 300, DiscountType.Amount);
 
-            var poloTShirt = new Product("Polo TShirt", 120, tShirtCategory);
-            var kotonTShirt = new Product("Koton TShirt", 40, tShirtCategory);
-            var lacosteTShirt = new Product("Lacoste TShirt", 220, tShirtCategory);
+                var poloTShirt = new Product("Polo TShirt", 120, tShirtCategory);
+                var kotonTShirt = new Product("Koton TShirt", 40, tShirtCategory);
+                var lacosteTShirt = new Product("Lacoste TShirt", 220, tShirtCategory);
 
-            var zaraJacket = new Product("Zara Jacket", 260, jacketCategory);
+                var zaraJacket = new Product("Zara Jacket", 260, jacketCategory);
 
-            var cart = new Core.ShoppingCart(new DeliveryCostCalculator(3.5, 2));
+                var cart = new Core.ShoppingCart(new DeliveryCostCalculator(3.5, 2));
 
-            cart.AddItem(poloTShirt, 2);
-            cart.AddItem(kotonTShirt);
-            cart.AddItem(lacosteTShirt);
+                cart.AddItem(poloTShirt, 2);
+                cart.AddItem(kotonTShirt);
+                cart.AddItem(lacosteTShirt);
 
-            cart.AddItem(zaraJacket);
+                cart.AddItem(zaraJacket);
 
-            cart.ApplyDiscounts(campaigns);
-            cart.ApplyCoupon(coupon);
+                cart.ApplyDiscounts(campaigns);
+                cart.ApplyCoupon(coupon);
 
-            Console.WriteLine(cart.Print());
+                Console.WriteLine(cart.Print());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
             Console.ReadLine();
         }

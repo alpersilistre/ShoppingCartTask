@@ -31,8 +31,10 @@ namespace ShoppingCart.Core
             {
                 Quantity += quantity;
             }
-
-            throw new InvalidOperationException();
+            else
+            {
+                throw new InvalidOperationException();
+            }            
         }
 
         public void DecreaseQuantity(int quantity = 1)
@@ -41,8 +43,10 @@ namespace ShoppingCart.Core
             {
                 Quantity -= quantity;
             }
-
-            throw new InvalidOperationException();
+            else
+            {
+                throw new InvalidOperationException();
+            }
         }
     }
 }
