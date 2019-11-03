@@ -1,4 +1,5 @@
-﻿using ShoppingCart.Core.Interfaces;
+﻿using Ardalis.GuardClauses;
+using ShoppingCart.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace ShoppingCart.Core
 {
     public class ShoppingCart : IShoppingCart
     {
-        private readonly IDeliveryCostCalculator DeliveryCostCalculator;
+        private readonly IDeliveryCostCalculator deliveryCostCalculator;
 
         public double TotalItemPrice
         {
@@ -37,11 +38,13 @@ namespace ShoppingCart.Core
 
         public ShoppingCart(IDeliveryCostCalculator deliveryCostCalculator)
         {
-            DeliveryCostCalculator = deliveryCostCalculator;
+            this.deliveryCostCalculator = deliveryCostCalculator;
         }
 
         public void AddItem(Product product, int quantity = 1)
-        {
+        {            
+            Guard.Against.Null(product, nameof(product));
+
             ShoppingCartItem item;
 
             if (Items.Any(x => x.Product.Title == product.Title))
@@ -60,6 +63,8 @@ namespace ShoppingCart.Core
 
         public void RemoveItem(Product product, int quantity = 1)
         {
+            Guard.Against.Null(product, nameof(product));
+
             if (Items.Any(x => x.Product.Title == product.Title))
             {
                 var item = items.Single(x => x.Product.Title == product.Title);
@@ -70,6 +75,8 @@ namespace ShoppingCart.Core
 
         public void ApplyCoupon(Coupon coupon)
         {
+            Guard.Against.Null(coupon, nameof(coupon));
+
             Coupon = coupon;
         }
 
@@ -92,7 +99,7 @@ namespace ShoppingCart.Core
 
             foreach (var campaign in campaigns)
             {
-                var numberOfItemByCategory = GetNumberOfItemByCategory(campaign.Category);
+                var numberOfItemByCategory = GetNumberOfItemsByCategory(campaign.Category);
 
                 if (numberOfItemByCategory >= campaign.MinimumAmountToApply)
                 {
@@ -107,11 +114,13 @@ namespace ShoppingCart.Core
             }
         }
 
-        private double GetCampaignDiscount(double totalPrice)
+        private double GetCampaignDiscount()
         {
             if (Campaign != null)
             {
-                return Campaign.GetDiscountPrice(totalPrice);
+                var categoryTotalPrice = GetTotalPriceOfItemsByCategory(Campaign.Category);
+
+                return Campaign.GetDiscountPrice(categoryTotalPrice);
             }
 
             return 0;
@@ -121,7 +130,7 @@ namespace ShoppingCart.Core
         {
             var totalPrice = TotalItemPrice;
 
-            totalPrice -= GetCampaignDiscount(totalPrice);
+            totalPrice -= GetCampaignDiscount();
 
             totalPrice -= GetCouponDiscount(totalPrice);
 
@@ -130,7 +139,7 @@ namespace ShoppingCart.Core
 
         public double GetDeliveryCost()
         {
-            return DeliveryCostCalculator.CalculateFor(this);         
+            return deliveryCostCalculator.CalculateFor(this);
         }
 
         public string Print()
@@ -159,9 +168,18 @@ namespace ShoppingCart.Core
             return output.ToString();
         }
 
-        private int GetNumberOfItemByCategory(Category category)
+        private int GetNumberOfItemsByCategory(Category category)
         {
+            Guard.Against.Null(category, nameof(category));
+
             return Items.Where(x => x.Product.Category.Title == category.Title).Sum(y => y.Quantity);
+        }
+
+        private double GetTotalPriceOfItemsByCategory(Category category)
+        {
+            Guard.Against.Null(category, nameof(category));
+
+            return Items.Where(x => x.Product.Category.Title == category.Title).Sum(y => y.ItemPrice);
         }
     }
 }

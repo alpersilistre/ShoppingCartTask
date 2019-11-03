@@ -1,4 +1,5 @@
-﻿using ShoppingCart.Core.Helpers;
+﻿using Ardalis.GuardClauses;
+using ShoppingCart.Core.Helpers;
 using System;
 
 namespace ShoppingCart.Core
@@ -15,6 +16,8 @@ namespace ShoppingCart.Core
 
         public override double GetDiscountPrice(double totalPrice)
         {
+            Guard.Against.Null(DiscountType, nameof(DiscountType));
+
             if (DiscountType == DiscountType.Rate)
             {
                 return totalPrice * (DiscountAmount / 100);
