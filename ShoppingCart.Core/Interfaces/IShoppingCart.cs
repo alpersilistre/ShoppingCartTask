@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using ShoppingCart.Core.Coupons;
+using ShoppingCart.Core.Discounts;
+using System.Collections.Generic;
 
 namespace ShoppingCart.Core.Interfaces
 {
@@ -9,8 +11,8 @@ namespace ShoppingCart.Core.Interfaces
         int NumberOfProducts { get; }
         void AddItem(Product product, int quantity = 1);
         void RemoveItem(Product product, int quantity = 1);
-        void ApplyCoupon(Coupon coupon);        
-        void ApplyDiscounts(List<Campaign> campaigns);        
+        void ApplyCoupon(Coupon coupon);
+        void ApplyDiscounts(List<Discount> discounts);
         double GetTotalAmountAfterDiscounts();
         double GetDeliveryCost();
         string Print();

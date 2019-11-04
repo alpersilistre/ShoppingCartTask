@@ -1,4 +1,6 @@
 ﻿using ShoppingCart.Core;
+using ShoppingCart.Core.Coupons;
+using ShoppingCart.Core.Discounts;
 using ShoppingCart.Core.Helpers;
 using System;
 using System.Collections.Generic;
@@ -14,13 +16,13 @@ namespace ShoppingCart
                 var tShirtCategory = new Category("TShirt");
                 var jacketCategory = new Category("Jacket");
 
-                var campaigns = new List<Campaign>();
+                var campaigns = new List<Discount>();
 
-                var tShirtCampaign = new Campaign(20, 3, DiscountType.Rate, tShirtCategory);
+                var tShirtCampaign = new RateCampaign(20, 3, tShirtCategory);
 
                 campaigns.Add(tShirtCampaign);
 
-                var coupon = new Coupon(50, 300, DiscountType.Amount);
+                var coupon = new AmountCoupon(50, 300);
 
                 var poloTShirt = new Product("Polo TShirt", 120, tShirtCategory);
                 var kotonTShirt = new Product("Koton TShirt", 40, tShirtCategory);

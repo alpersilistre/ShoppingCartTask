@@ -1,7 +1,8 @@
 ﻿using Ardalis.GuardClauses;
+using ShoppingCart.Core.Coupons;
+using ShoppingCart.Core.Discounts;
 using ShoppingCart.Core.Helpers;
 using ShoppingCart.Core.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,7 @@ namespace ShoppingCart.Core
 
         public Coupon Coupon { get; private set; }
 
-        public Campaign Campaign { get; set; }
+        public Discount Campaign { get; set; }
 
         private readonly List<ShoppingCartItem> items = new List<ShoppingCartItem>();
         public IReadOnlyCollection<ShoppingCartItem> Items => items.AsReadOnly();
@@ -96,19 +97,19 @@ namespace ShoppingCart.Core
             return 0;
         }
 
-        public void ApplyDiscounts(List<Campaign> campaigns)
+        public void ApplyDiscounts(List<Discount> discounts)
         {
             double maximumDiscount = 0;
 
-            foreach (var campaign in campaigns)
+            foreach (var campaign in discounts)
             {
                 var numberOfItemByCategory = GetNumberOfItemsByCategory(campaign.Category);
 
-                if (numberOfItemByCategory >= campaign.MinimumAmountToApply)
+                if (numberOfItemByCategory >= campaign.MinimumQuantityToApply)
                 {
                     var discountValue = campaign.GetDiscountPrice(TotalItemPrice);
 
-                    if (campaign.GetDiscountPrice(TotalItemPrice) > maximumDiscount)
+                    if (discountValue > maximumDiscount)
                     {
                         maximumDiscount = discountValue;
                         Campaign = campaign;

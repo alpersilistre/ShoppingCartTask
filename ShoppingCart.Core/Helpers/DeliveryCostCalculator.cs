@@ -4,9 +4,9 @@ namespace ShoppingCart.Core.Helpers
 {
     public class DeliveryCostCalculator : IDeliveryCostCalculator
     {
-        public double CostPerDelivery { get; private set; }
+        public double CostPerDelivery { get; }
 
-        public double CostPerProduct { get; private set; }
+        public double CostPerProduct { get; }
 
         private readonly double _fixedCost = 2.99;
 
