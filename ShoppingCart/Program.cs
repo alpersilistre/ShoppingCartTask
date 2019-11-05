@@ -14,7 +14,7 @@ namespace ShoppingCart
             try
             {
                 var tShirtCategory = new Category("TShirt");
-                var sportTShirtCategory = new Category("TShirt", tShirtCategory);
+                var sportTShirtCategory = new Category("Sport TShirt", tShirtCategory);
                 var jacketCategory = new Category("Jacket");
 
                 var campaigns = new List<Discount>();
@@ -36,7 +36,7 @@ namespace ShoppingCart
                 var cart = new Core.ShoppingCart(new DeliveryCostCalculator(3.5, 2));
 
                 cart.AddItem(poloTShirt, 1);
-                cart.AddItem(poloTShirt, 1);
+                cart.AddItem(hummelTShirt, 1);
                 cart.AddItem(kotonTShirt);
                 cart.AddItem(lacosteTShirt);
 

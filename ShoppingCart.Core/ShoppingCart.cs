@@ -192,14 +192,29 @@ namespace ShoppingCart.Core
         {
             Guard.Against.Null(category, nameof(category));
 
-            return Items.Where(x => x.Product.Category.Title == category.Title).Sum(y => y.ItemPrice);
+            if (!HasParentCategory(category))
+            {
+                return Items.Where(x => x.Product.Category.Title == category.Title).Sum(y => y.ItemPrice);
+            }
+
+            var categoryNames = GetParentAndChildCategoryNames(category);
+
+            return Items.Where(x => categoryNames.Contains(x.Product.Category.Title)).Sum(y => y.ItemPrice);
         }
 
         private bool HasParentCategory(Category category)
         {
-            var categories = GetCategories();
+            var categories = GetCategories();            
 
-            return categories.Any(x => x.Parent?.Title == category.Title);
+            foreach (var item in categories)
+            {
+                if (item.Parent != null && item.Parent.Title == category.Title)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private List<string> GetParentAndChildCategoryNames(Category category)
