@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Ardalis.GuardClauses;
 
 namespace ShoppingCart.Core
 {
@@ -36,26 +36,18 @@ namespace ShoppingCart.Core
 
         public void IncreaseQuantity(int quantity = 1)
         {
-            if (ShoppingCart != null && Product != null)
-            {
-                this.quantity += quantity;
-            }
-            else
-            {
-                throw new InvalidOperationException();
-            }            
+            Guard.Against.Null(ShoppingCart, nameof(ShoppingCart));
+            Guard.Against.Null(Product, nameof(Product));
+
+            this.quantity += quantity;
         }
 
         public void DecreaseQuantity(int quantity = 1)
         {
-            if (ShoppingCart != null && Product != null)
-            {
-                this.quantity -= quantity;
-            }
-            else
-            {
-                throw new InvalidOperationException();
-            }
+            Guard.Against.Null(ShoppingCart, nameof(ShoppingCart));
+            Guard.Against.Null(Product, nameof(Product));
+
+            this.quantity -= quantity;
         }
     }
 }

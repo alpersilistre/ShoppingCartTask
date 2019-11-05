@@ -30,6 +30,7 @@ namespace ShoppingCart
                 var lacosteTShirt = new Product("Lacoste TShirt", 220, tShirtCategory);
 
                 var hummelTShirt = new Product("Hummel Sport TShirt", 120, sportTShirtCategory);
+                var premiumHummelTShirt = new Product("Premium Hummel Sport TShirt", 500, sportTShirtCategory);
 
                 var zaraJacket = new Product("Zara Jacket", 260, jacketCategory);
 
@@ -37,6 +38,7 @@ namespace ShoppingCart
 
                 cart.AddItem(poloTShirt, 1);
                 cart.AddItem(hummelTShirt, 1);
+                cart.AddItem(premiumHummelTShirt);
                 cart.AddItem(kotonTShirt);
                 cart.AddItem(lacosteTShirt);
 
