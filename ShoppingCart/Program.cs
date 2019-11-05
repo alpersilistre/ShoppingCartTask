@@ -14,11 +14,12 @@ namespace ShoppingCart
             try
             {
                 var tShirtCategory = new Category("TShirt");
+                var sportTShirtCategory = new Category("TShirt", tShirtCategory);
                 var jacketCategory = new Category("Jacket");
 
                 var campaigns = new List<Discount>();
 
-                var tShirtCampaign = new RateCampaign(20, 3, tShirtCategory);
+                var tShirtCampaign = new RateCampaign(20, 4, tShirtCategory);
 
                 campaigns.Add(tShirtCampaign);
 
@@ -28,11 +29,14 @@ namespace ShoppingCart
                 var kotonTShirt = new Product("Koton TShirt", 40, tShirtCategory);
                 var lacosteTShirt = new Product("Lacoste TShirt", 220, tShirtCategory);
 
+                var hummelTShirt = new Product("Hummel Sport TShirt", 120, sportTShirtCategory);
+
                 var zaraJacket = new Product("Zara Jacket", 260, jacketCategory);
 
                 var cart = new Core.ShoppingCart(new DeliveryCostCalculator(3.5, 2));
 
-                cart.AddItem(poloTShirt, 2);
+                cart.AddItem(poloTShirt, 1);
+                cart.AddItem(poloTShirt, 1);
                 cart.AddItem(kotonTShirt);
                 cart.AddItem(lacosteTShirt);
 

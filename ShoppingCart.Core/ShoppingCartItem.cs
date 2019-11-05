@@ -8,7 +8,16 @@ namespace ShoppingCart.Core
 
         public Product Product { get; }
 
-        public int Quantity { get; private set; } = 0;
+        private int quantity;
+        public int Quantity
+        {
+            get
+            {
+                return quantity > 0 ? quantity : 0;
+            }
+
+            private set => value = quantity;
+        }
 
         public double ItemPrice
         {
@@ -22,14 +31,14 @@ namespace ShoppingCart.Core
         {
             ShoppingCart = cart;
             Product = product;
-            Quantity = quantity;
+            this.quantity = quantity;
         }
 
         public void IncreaseQuantity(int quantity = 1)
         {
             if (ShoppingCart != null && Product != null)
             {
-                Quantity += quantity;
+                this.quantity += quantity;
             }
             else
             {
@@ -41,7 +50,7 @@ namespace ShoppingCart.Core
         {
             if (ShoppingCart != null && Product != null)
             {
-                Quantity -= quantity;
+                this.quantity -= quantity;
             }
             else
             {

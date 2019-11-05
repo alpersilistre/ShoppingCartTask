@@ -150,7 +150,7 @@ namespace ShoppingCart.Core
         {
             var output = new StringBuilder();
 
-            var categories = Items.GroupBy(x => x.Product.Category).Select(x => x.First()).Select(x => x.Product.Category);
+            var categories = GetCategories();
 
             foreach (var category in categories)
             {
@@ -172,11 +172,20 @@ namespace ShoppingCart.Core
             return output.ToString();
         }
 
+        #region Helper Methods
+
         private int GetNumberOfItemsByCategory(Category category)
         {
             Guard.Against.Null(category, nameof(category));
 
-            return Items.Where(x => x.Product.Category.Title == category.Title).Sum(y => y.Quantity);
+            if (!HasParentCategory(category))
+            {
+                return Items.Where(x => x.Product.Category.Title == category.Title).Sum(y => y.Quantity);
+            }
+
+            var categoryNames = GetParentAndChildCategoryNames(category);
+
+            return Items.Where(x => categoryNames.Contains(category.Title)).Sum(y => y.Quantity);
         }
 
         private double GetTotalPriceOfItemsByCategory(Category category)
@@ -185,5 +194,26 @@ namespace ShoppingCart.Core
 
             return Items.Where(x => x.Product.Category.Title == category.Title).Sum(y => y.ItemPrice);
         }
+
+        private bool HasParentCategory(Category category)
+        {
+            var categories = GetCategories();
+
+            return categories.Any(x => x.Parent?.Title == category.Title);
+        }
+
+        private List<string> GetParentAndChildCategoryNames(Category category)
+        {
+            var categories = GetCategories();
+
+            return categories.Where(x => x.Title == category.Title || x.Parent?.Title == category.Title).Select(x => x.Title).ToList();
+        }
+
+        private IEnumerable<Category> GetCategories()
+        {
+            return Items.GroupBy(x => x.Product.Category).Select(x => x.First()).Select(x => x.Product.Category);
+        }
+
+        #endregion
     }
 }
